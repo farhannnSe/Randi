@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Mein Modular Drehrad</title>
+    <!-- CSS wird jetzt aus dem public Ordner geladen -->
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Der Großteil des CSS kommt aus der styles.css Datei.
+           Hier nur ein paar wenige Styles, die direkt in HTML müssen, z.B. wenn
+           wir später dynamische Dinge ändern wollen, die das Layout beeinflussen. */
+        
+        .hidden { /* Hilfsklasse, um Elemente kurz unsichtbar zu machen */
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎯 Randi</h1>
+        
+        <div class="input-group">
+            <input type="text" id="optionInput" placeholder="Option hinzufügen...">
+            <button id="addBtn">+</button>
+        </div>
+
+        <ul id="optionsListe"></ul>
+
+        <div class="wheel-box">
+            <div class="pointer"></div>
+            <canvas id="wheelCanvas" width="300" height="300"></canvas>
+        </div>
+
+        <button id="drehBtn">DREHEN!</button>
+
+        <div class="result-box" id="ergebnis">
+            Füge Optionen hinzu!
+        </div>
+    </div>
+
+    <!-- JavaScript wird jetzt aus dem public Ordner geladen -->
+    <script src="main.js"></script>
+</body>
+</html>
+<script type="module" src="index.js"></script>
