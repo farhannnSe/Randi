@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎯 Mein Premium Multi-Game</title>
+    <title>🎯 Randi Drehrad/ Chooser</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Hilfsklasse zum Verstecken von Bildschirmen */
@@ -17,10 +17,10 @@
     <!-- 1. HOME SCREEN (HAUPTMENÜ) -->
     <div id="homeScreen" class="container">
         <h1> Randi </h1>
-        <p style="color: #718096; margin-bottom: 30px;">Wähle ein Spiel aus:</p>
+        <p style="color: #072f6b; margin-bottom: 40px;">Lass den Zufall entscheiden :</p>
         
-        <button id="navToWheelBtn" class="menu-btn">🎯 Drehrad-Simulator</button>
-        <button id="navToFingerBtn" class="menu-btn" style="background-color: #4bc0c0; margin-top: 15px;">🖐️ Finger-Auswahl</button>
+        <button id="navToWheelBtn" class="menu-btn">🎯 Drehrad </button>
+        <button id="navToFingerBtn" class="menu-btn" style="background-color: #d9660e; margin-top: 15px;">🖐️ Chooser</button>
     </div>
 
     <!-- 2. DREHRAD SCREEN (Standardmäßig versteckt) -->
@@ -28,11 +28,11 @@
         <!-- Zurück-Button -->
         <button class="back-btn" id="backFromWheelBtn">⬅️ Menü</button>
         
-        <h1>🎯 Drehrad App</h1>
+        <h1>🎯 Drehrad </h1>
         
         <div class="input-group">
             <input type="text" id="optionInput" placeholder="Option hinzufügen...">
-            <button id="addBtn">+</button>
+            <button id="addBtn">✓</button>
         </div>
 
         <ul id="optionsListe"></ul>
@@ -42,7 +42,7 @@
             <canvas id="wheelCanvas" width="300" height="300"></canvas>
         </div>
 
-        <button id="drehBtn">DREHEN!</button>
+        <button id="drehBtn">Spin!</button>
 
         <div class="result-box" id="ergebnis">
             Füge Optionen hinzu!
@@ -53,8 +53,8 @@
     <div id="fingerScreen" class="container hidden">
         <button class="back-btn" id="backFromFingerBtn">⬅️ Menü</button>
         
-        <h1>🖐️ Finger-Auswahl</h1>
-        <p style="color: #718096; font-size: 14px; margin-bottom: 15px;">Lege 2 oder mehr Finger auf den Kreis!</p>
+        <h1>🖐️ Chooser</h1>
+        <p style="color: #b96606; font-size: 14px; margin-bottom: 15px;">Lege 2 oder mehr Finger auf den Kreis!</p>
 
         <!-- Das interaktive Multi-Touch Feld -->
         <div class="wheel-box">
