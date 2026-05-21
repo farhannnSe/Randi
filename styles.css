@@ -9,6 +9,7 @@ body {
     margin: 0;
 }
 .container {
+    position: relative; /* Wichtig für die Positionierung des Zurück-Buttons */
     background: white;
     padding: 30px;
     border-radius: 20px;
@@ -16,7 +17,32 @@ body {
     text-align: center;
     width: 380px;
 }
-h1 { color: #4a5568; margin-bottom: 20px; }
+h1 { color: #4a5568; margin-top: 10px; margin-bottom: 20px; }
+
+/* Menü-Buttons auf der Home-Seite */
+.menu-btn {
+    width: 100%;
+    padding: 20px;
+    font-size: 18px;
+    background-color: #667eea;
+    border-radius: 12px;
+}
+
+/* Zurück-Pfeil oben links in den Spielen */
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 6px 12px;
+    font-size: 13px;
+    background-color: #e2e8f0;
+    color: #4a5568;
+    border-radius: 6px;
+}
+.back-btn:hover {
+    background-color: #cbd5e0;
+}
+
 .input-group {
     display: flex;
     gap: 10px;
@@ -46,7 +72,7 @@ button:hover { background-color: #5a67d8; }
 .wheel-box {
     position: relative;
     display: inline-block;
-    margin: 20px 0;
+    margin: 10px 0;
     width: 300px;
     height: 300px;
 }

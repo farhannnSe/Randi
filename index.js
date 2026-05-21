@@ -1,8 +1,22 @@
-import { Wheel } from './Wheel.js';
-import { FARBEN_PALETTE } from './utils.js';
 // src/index.ts
+import { Wheel } from './Wheel.js';
+import { FingerPicker } from './Finger.js'; // NEU
+import { FARBEN_PALETTE } from './utils.js';
 // =========================================================================
-// HTML ELEMENTE HOLEN
+// HTML BILDCHIRME (SCREENS) HOLEN
+// =========================================================================
+const homeScreen = document.getElementById("homeScreen");
+const wheelScreen = document.getElementById("wheelScreen");
+const fingerScreen = document.getElementById("fingerScreen");
+// =========================================================================
+// NAVIGATION BUTTONS HOLEN
+// =========================================================================
+const navToWheelBtn = document.getElementById("navToWheelBtn");
+const navToFingerBtn = document.getElementById("navToFingerBtn");
+const backFromWheelBtn = document.getElementById("backFromWheelBtn");
+const backFromFingerBtn = document.getElementById("backFromFingerBtn");
+// =========================================================================
+// SPIEL-ELEMENTE (DREHRAD) HOLEN
 // =========================================================================
 const inputFeld = document.getElementById("optionInput");
 const listeElement = document.getElementById("optionsListe");
@@ -10,24 +24,45 @@ const ergebnisText = document.getElementById("ergebnis");
 const addBtn = document.getElementById("addBtn");
 const drehBtn = document.getElementById("drehBtn");
 // =========================================================================
-// WICHTIG: DIE WHEEL KLASSE INITIALISIEREN
+// SPIEL-ELEMENTE (FINGER-AUSWAHL) HOLEN
 // =========================================================================
-// Wir übergeben IDs, die Anfangsoptionen, die Farben und die Callback-Funktionen
-const wheelInstance = new Wheel("wheelCanvas", // ID des Canvas-Elements
-[], // Anfangs ist die Liste leer
-FARBEN_PALETTE, // Unsere schöne Farbpalette
-(ergebnis) => {
-    ergebnisText.textContent = ergebnis;
-}, () => {
-    listeAktualisieren(); // Wir müssen die Liste im HTML neu rendern lassen
+const fingerErgebnisText = document.getElementById("fingerErgebnis");
+// =========================================================================
+// INITIALISIERUNG DER KLASSEN
+// =========================================================================
+// 1. Drehrad initialisieren
+const wheelInstance = new Wheel("wheelCanvas", [], FARBEN_PALETTE, (ergebnis) => { ergebnisText.textContent = ergebnis; }, () => { listeAktualisieren(); });
+// 2. Finger-Auswahl initialisieren (NEU)
+const fingerInstance = new FingerPicker("fingerCanvas", (status) => { fingerErgebnisText.textContent = status; });
+// =========================================================================
+// SCREEN-NAVIGATION (BILDCHIRME UMSTELLEN)
+// =========================================================================
+// Klick auf "Drehrad-Simulator" im Menü
+navToWheelBtn.addEventListener("click", () => {
+    homeScreen.classList.add("hidden");
+    wheelScreen.classList.remove("hidden");
+});
+// Klick auf "Finger-Auswahl" im Menü
+navToFingerBtn.addEventListener("click", () => {
+    homeScreen.classList.add("hidden");
+    fingerScreen.classList.remove("hidden");
+    fingerInstance.reset(); // Setzt das Spielfeld zurück
+});
+// Zurück-Buttons
+backFromWheelBtn.addEventListener("click", () => {
+    wheelScreen.classList.add("hidden");
+    homeScreen.classList.remove("hidden");
+});
+backFromFingerBtn.addEventListener("click", () => {
+    fingerScreen.classList.add("hidden");
+    homeScreen.classList.remove("hidden");
+    fingerInstance.reset();
 });
 // =========================================================================
-// HELFER-FUNKTIONEN (UI-LOGIK)
+// DREHRAD UI-LOGIK
 // =========================================================================
-// Diese Funktion wird von der Wheel-Klasse aufgerufen, wenn sich die Optionen ändern.
-// Sie baut die HTML-Liste jedes Mal komplett neu auf.
 function listeAktualisieren() {
-    listeElement.innerHTML = ""; // Liste im HTML leeren
+    listeElement.innerHTML = "";
     wheelInstance.optionen.forEach((option, index) => {
         const li = document.createElement("li");
         li.className = "option-item";
@@ -42,9 +77,8 @@ function listeAktualisieren() {
         editBtn.textContent = "✏️";
         editBtn.title = "Option bearbeiten";
         editBtn.addEventListener("click", () => {
-            if (!wheelInstance.istAmDrehen) { // Nur bearbeiten, wenn Rad nicht dreht
+            if (!wheelInstance.istAmDrehen)
                 bearbeiteOption(index);
-            }
         });
         btnGroup.appendChild(editBtn);
         const deleteBtn = document.createElement("button");
@@ -52,51 +86,39 @@ function listeAktualisieren() {
         deleteBtn.textContent = "❌";
         deleteBtn.title = "Option löschen";
         deleteBtn.addEventListener("click", () => {
-            if (!wheelInstance.istAmDrehen) { // Nur löschen, wenn Rad nicht dreht
+            if (!wheelInstance.istAmDrehen)
                 loescheOption(index);
-            }
         });
         btnGroup.appendChild(deleteBtn);
         li.appendChild(btnGroup);
         listeElement.appendChild(li);
     });
-    // Wenn keine Optionen mehr da sind, zeigen wir den Start-Text an
     if (wheelInstance.optionen.length === 0) {
         ergebnisText.textContent = "Füge Optionen hinzu!";
     }
 }
-// Funktion, um die Bearbeitungs-Logik auszulösen
 function bearbeiteOption(index) {
-    const alterWert = wheelInstance.optionen[index]; // Zugriff auf die Optionen der Wheel-Instanz
+    const alterWert = wheelInstance.optionen[index];
     const neuerWert = prompt("Option bearbeiten:", alterWert);
     if (neuerWert !== null && neuerWert.trim() !== "") {
-        wheelInstance.editOption(index, neuerWert); // Rufe die editOption-Methode der Klasse auf
+        wheelInstance.editOption(index, neuerWert);
     }
 }
-// Funktion, um die Lösch-Logik auszulösen
 function loescheOption(index) {
-    wheelInstance.removeOption(index); // Rufe die removeOption-Methode der Klasse auf
+    wheelInstance.removeOption(index);
 }
-// =========================================================================
-// EVENT LISTENER
-// =========================================================================
-// Hinzufügen-Button
 addBtn.addEventListener("click", () => {
     const wert = inputFeld.value;
-    wheelInstance.addOption(wert); // Nutze die addOption-Methode der Klasse
-    inputFeld.value = ""; // Eingabefeld leeren, nachdem die Option übergeben wurde
+    wheelInstance.addOption(wert);
+    inputFeld.value = "";
 });
-// Drehen-Button
 drehBtn.addEventListener("click", () => {
-    wheelInstance.startDrehen(); // Rufe die Start-Dreh-Methode der Klasse auf
+    wheelInstance.startDrehen();
 });
-// Enter-Taste im Eingabefeld
 inputFeld.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
-        wheelInstance.addOption(inputFeld.value); // Nutze die addOption-Methode der Klasse
-        inputFeld.value = ""; // Eingabefeld leeren
+        wheelInstance.addOption(inputFeld.value);
+        inputFeld.value = "";
     }
 });
-// Initialisierung: Rufe die Funktion auf, um die Liste beim ersten Start zu rendern
-// (Sie ist zwar leer, aber die Funktion bereitet alles vor)
 listeAktualisieren();
