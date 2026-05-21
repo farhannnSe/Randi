@@ -8,27 +8,28 @@ body {
     height: 100vh;
     margin: 0;
 }
+/* Container etwas breiter für das große 340px Spielfeld */
 .container {
-    position: relative; /* Wichtig für die Positionierung des Zurück-Buttons */
+    position: relative;
     background: white;
     padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    border-radius: 25px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
     text-align: center;
-    width: 380px;
+    width: 90%;
+    max-width: 410px; /* Perfekte Breite für Smartphones */
 }
-h1 { color: #4a5568; margin-top: 10px; margin-bottom: 20px; }
+h1 { color: #4a5568; margin-top: 15px; margin-bottom: 20px; }
 
-/* Menü-Buttons auf der Home-Seite */
 .menu-btn {
     width: 100%;
-    padding: 20px;
-    font-size: 18px;
+    padding: 22px;
+    font-size: 20px;
     background-color: #667eea;
-    border-radius: 12px;
+    border-radius: 14px;
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
 }
 
-/* Zurück-Pfeil oben links in den Spielen */
 .back-btn {
     position: absolute;
     top: 20px;
@@ -50,14 +51,14 @@ h1 { color: #4a5568; margin-top: 10px; margin-bottom: 20px; }
 }
 input {
     flex-grow: 1;
-    padding: 10px;
+    padding: 12px;
     border: 2px solid #e2e8f0;
     border-radius: 8px;
     font-size: 16px;
     outline: none;
 }
 button {
-    padding: 10px 15px;
+    padding: 10px 18px;
     border: none;
     background-color: #667eea;
     color: white;
@@ -69,12 +70,13 @@ button {
 }
 button:hover { background-color: #5a67d8; }
 
+/* Box auf 340px vergrößert */
 .wheel-box {
     position: relative;
     display: inline-block;
     margin: 10px 0;
-    width: 300px;
-    height: 300px;
+    width: 340px;
+    height: 340px;
 }
 .pointer {
     position: absolute;
@@ -91,7 +93,7 @@ button:hover { background-color: #5a67d8; }
 }
 canvas {
     border-radius: 50%;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.18);
 }
 
 #drehBtn {
