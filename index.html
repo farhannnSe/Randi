@@ -66,6 +66,24 @@
             Warte auf Finger...
         </div>
     </div>
+        </div>
+
+    <!-- === NEU: MODAL POPUP (FÜR DEN GEWINNER) === -->
+    <div id="resultModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModalBtn">&times;</span>
+            <h2 style="font-size: 24px; margin: 10px 0; color: #4a5568;">🎉 Gewinner!</h2>
+            <!-- Hier wird das Ergebnis dynamisch eingefügt -->
+            <p id="modalResultText"></p>
+            <button id="modalOkBtn">Super!</button>
+        </div>
+    </div>
+
+    <!-- ... (Dein restlicher HTML-Code bleibt gleich) ... -->
+    </div>
+
+    <!-- === NEU: KONFETTI-BIBLIOTHEK EINBINDEN === -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script type="module" src="index.js"></script>
 </body>

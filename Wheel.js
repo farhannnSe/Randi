@@ -1,4 +1,4 @@
-// Wheel.ts
+// src/Wheel.ts
 export class Wheel {
     constructor(canvasId, options, colors, onResult, onUpdateList) {
         this.optionen = [];
@@ -6,8 +6,7 @@ export class Wheel {
         this.aktuellerWinkel = 0;
         this.drehGeschwindigkeit = 0;
         this.istAmDrehen = false;
-        this.animationFrameId = null; // Um die Animation sauber stoppen zu können
-        // Callbacks, um Änderungen an der UI zu melden (z.B. das Ergebnis)
+        this.animationFrameId = null;
         this.onResult = () => { };
         this.onUpdateList = () => { };
         const canvasElement = document.getElementById(canvasId);
@@ -16,8 +15,8 @@ export class Wheel {
         }
         this.canvas = canvasElement;
         this.ctx = this.canvas.getContext("2d");
-        this.optionen = [...options]; // Kopiere die Optionen
-        this.farben = colors.length > 0 ? colors : this.farben; // Verwende übergebene Farben, sonst Defaults
+        this.optionen = [...options];
+        this.farben = colors.length > 0 ? colors : this.farben;
         this.breite = this.canvas.width;
         this.hoehe = this.canvas.height;
         this.zentrumX = this.breite / 2;
@@ -25,22 +24,24 @@ export class Wheel {
         this.radius = this.breite / 2 - 10;
         this.onResult = onResult;
         this.onUpdateList = onUpdateList;
-        this.zeichneRad(); // Initial das leere Rad zeichnen
+        this.zeichneRad();
     }
-    // =========================================================================
-    // ZEICHEN-LOGIK
-    // =========================================================================
     zeichneRad() {
-        this.ctx.clearRect(0, 0, this.breite, this.hoehe);
+        const breite = this.canvas.width;
+        const hoehe = this.canvas.height;
+        const zentrumX = breite / 2;
+        const zentrumY = hoehe / 2;
+        const radius = breite / 2 - 10;
+        this.ctx.clearRect(0, 0, breite, hoehe);
         if (this.optionen.length === 0) {
             this.ctx.fillStyle = "#edf2f7";
             this.ctx.beginPath();
-            this.ctx.arc(this.zentrumX, this.zentrumY, this.radius, 0, 2 * Math.PI);
+            this.ctx.arc(zentrumX, zentrumY, radius, 0, 2 * Math.PI);
             this.ctx.fill();
             this.ctx.fillStyle = "#718096";
             this.ctx.font = "bold 16px Arial";
             this.ctx.textAlign = "center";
-            this.ctx.fillText("Keine Optionen", this.zentrumX, this.zentrumY + 5);
+            this.ctx.fillText("Keine Optionen", zentrumX, zentrumY + 5);
             return;
         }
         const stueckWinkel = (2 * Math.PI) / this.optionen.length;
@@ -49,31 +50,29 @@ export class Wheel {
             const endWinkel = startWinkel + stueckWinkel;
             this.ctx.fillStyle = this.farben[i % this.farben.length];
             this.ctx.beginPath();
-            this.ctx.moveTo(this.zentrumX, this.zentrumY);
-            this.ctx.arc(this.zentrumX, this.zentrumY, this.radius, startWinkel, endWinkel);
-            this.ctx.lineTo(this.zentrumX, this.zentrumY);
+            this.ctx.moveTo(zentrumX, zentrumY);
+            this.ctx.arc(zentrumX, zentrumY, this.radius, startWinkel, endWinkel);
+            this.ctx.lineTo(zentrumX, zentrumY);
             this.ctx.fill();
             this.ctx.save();
-            this.ctx.translate(this.zentrumX, this.zentrumY);
+            this.ctx.translate(zentrumX, zentrumY);
             this.ctx.rotate(startWinkel + stueckWinkel / 2);
             this.ctx.fillStyle = "#ffffff";
             this.ctx.font = "bold 14px Arial";
             this.ctx.textAlign = "right";
             this.ctx.shadowColor = "rgba(0,0,0,0.3)";
             this.ctx.shadowBlur = 4;
+            // HIER WAR DER FEHLER (jetzt sauber korrigiert):
             const text = this.optionen[i].length > 12 ? this.optionen[i].substring(0, 10) + ".." : this.optionen[i];
             this.ctx.fillText(text, this.radius - 15, 5);
             this.ctx.restore();
         }
     }
-    // =========================================================================
-    // LOGIK: OPTIONEN HINZUFÜGEN, BEARBEITEN, LÖSCHEN
-    // =========================================================================
     addOption(option) {
         const wert = option.trim();
         if (wert !== "" && !this.istAmDrehen) {
             this.optionen.push(wert);
-            this.onUpdateList(); // UI informieren, dass sich die Liste geändert hat
+            this.onUpdateList();
             this.zeichneRad();
         }
     }
@@ -98,24 +97,55 @@ export class Wheel {
         }
     }
     // =========================================================================
-    // PHYSIKALISCHE ANIMATION
+    // DIE DREH-ANIMATION MIT ÜBERGANG ZUM BOUNCE-BACK
     // =========================================================================
     animiereRad() {
-        if (this.drehGeschwindigkeit > 0.002) {
+        if (this.drehGeschwindigkeit > 0.005) {
             this.drehGeschwindigkeit *= 0.97;
             this.aktuellerWinkel += this.drehGeschwindigkeit;
             this.zeichneRad();
             this.animationFrameId = requestAnimationFrame(() => this.animiereRad());
         }
         else {
-            this.istAmDrehen = false;
-            this.drehGeschwindigkeit = 0;
-            const totalArc = 2 * Math.PI;
-            const normalisierterWinkel = (this.aktuellerWinkel + Math.PI / 2) % totalArc;
-            const stueckWinkel = totalArc / this.optionen.length;
-            const ErgebnisIndex = this.optionen.length - 1 - Math.floor(normalisierterWinkel / stueckWinkel) % this.optionen.length;
-            this.onResult(this.optionen[ErgebnisIndex]);
+            // === NEU: MÜNDUNG IN DEN BOUNCE-BACK ===
+            // Wenn das Rad fast steht, fangen wir die Position ab und starten das Zurückfedern!
+            this.bounceBack(this.aktuellerWinkel);
         }
+    }
+    // Die physikalische Rückfeder-Animation (Lerp-Verfahren)
+    bounceBack(stopWinkel) {
+        let frame = 0;
+        const maxFrames = 22; // Dauer des Zurückfederns (22 Frames)
+        const start = this.aktuellerWinkel;
+        // Wir federn um ca. 5 Grad (0.08 Radiant) in die Gegenrichtung zurück
+        const zielWinkel = stopWinkel - 0.08;
+        const doBounce = () => {
+            frame++;
+            const t = frame / maxFrames;
+            // Mathematische Sinus-Kurve für ein geschmeidiges, gedämpftes Einpendeln
+            this.aktuellerWinkel = start + (zielWinkel - start) * Math.sin(t * Math.PI / 2);
+            this.zeichneRad();
+            if (frame < maxFrames) {
+                this.animationFrameId = requestAnimationFrame(doBounce);
+            }
+            else {
+                // Das Federn ist vorbei! Jetzt verkünden wir das finale Ergebnis
+                this.finalizeSpin();
+            }
+        };
+        doBounce();
+    }
+    // Das finale Ergebnis berechnen
+    finalizeSpin() {
+        this.istAmDrehen = false;
+        this.drehGeschwindigkeit = 0;
+        this.animationFrameId = null;
+        const totalArc = 2 * Math.PI;
+        const normalisierterWinkel = (this.aktuellerWinkel + Math.PI / 2) % totalArc;
+        const stueckWinkel = totalArc / this.optionen.length;
+        const ErgebnisIndex = this.optionen.length - 1 - Math.floor(normalisierterWinkel / stueckWinkel) % this.optionen.length;
+        // Ergebnis an index.ts melden (welches dort das Popup öffnet!)
+        this.onResult("🎯 " + this.optionen[ErgebnisIndex]);
     }
     startDrehen() {
         if (this.optionen.length < 2) {
@@ -124,7 +154,6 @@ export class Wheel {
         }
         if (this.istAmDrehen)
             return;
-        // Stoppe eine eventuell laufende Animation, bevor eine neue startet
         if (this.animationFrameId !== null) {
             cancelAnimationFrame(this.animationFrameId);
         }
