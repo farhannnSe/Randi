@@ -5,8 +5,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* Geändert von height zu min-height, erlaubt Scrollen */
     margin: 0;
+    padding: 20px 0; /* Verhindert, dass die Box jemals oben anstößt */
+    box-sizing: border-box;
+}
+
+/* Globaler Reset, damit Abstände auf allen Handys exakt berechnet werden */
+*, *:before, *:after {
+    box-sizing: border-box;
 }
 /* Container etwas breiter für das große 340px Spielfeld */
 .container {
@@ -30,15 +37,20 @@ h1 { color: #4a5568; margin-top: 15px; margin-bottom: 20px; }
     box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
 }
 
+/* Zurück-Pfeil oben links in den Spielen */
 .back-btn {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 15px;
+    left: 15px;
     padding: 6px 12px;
     font-size: 13px;
     background-color: #e2e8f0;
     color: #4a5568;
     border-radius: 6px;
+    z-index: 100; /* Stellt sicher, dass der Button immer ganz oben liegt */
+}
+.back-btn:hover {
+    background-color: #cbd5e0;
 }
 .back-btn:hover {
     background-color: #cbd5e0;
