@@ -54,4 +54,4 @@ If you want to play around with the code on your machine:
 
 ---
 
-*Made with ☕ by Farhan Seifaldeen.*
+*Made by Farhan Seifaldeen.*
