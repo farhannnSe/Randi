@@ -23,7 +23,7 @@
         <button id="navToFingerBtn" class="menu-btn" style="background-color: #d9660e; margin-top: 15px;">🖐️ Chooser</button>
     </div>
 
-    <!-- 2. DREHRAD SCREEN (Standardmäßig versteckt) -->
+    <!-- 2. DREHRAD SCREEN -->
     <div id="wheelScreen" class="container hidden">
         <!-- Zurück-Button -->
         <button class="back-btn" id="backFromWheelBtn">⬅️ Menü</button>
@@ -37,7 +37,6 @@
 
         <ul id="optionsListe"></ul>
 
-        <!-- Canvas auf 340x340 vergrößert für das neue Gehäuse -->
         <div class="wheel-box">
             <div class="pointer"></div>
             <canvas id="wheelCanvas" width="340" height="340"></canvas>
@@ -50,39 +49,27 @@
         </div>
     </div>
 
-    <!-- 3. FINGER AUSWAHL SCREEN (Standardmäßig versteckt) -->
-    <div id="fingerScreen" class="container hidden">
+    <!-- 3. FINGER AUSWAHL SCREEN (Fullscreen & Orange) -->
+    <div id="fingerScreen" class="hidden">
         <button class="back-btn" id="backFromFingerBtn">⬅️ Menü</button>
-        
-        <h1>🖐️ Chooser</h1>
-        <p style="color: #b96606; font-size: 14px; margin-bottom: 15px;">Lege 2 oder mehr Finger auf den Kreis!</p>
-
-        <!-- Canvas auf 340x340 vergrößert für das neue Gehäuse -->
-        <div class="wheel-box">
-            <canvas id="fingerCanvas" width="340" height="340"></canvas>
-        </div>
-
-        <div class="result-box" id="fingerErgebnis">
-            Warte auf Finger...
+        <h1 class="fullscreen-title">🖐️ Chooser</h1>
+        <canvas id="fingerCanvas"></canvas>
+        <div class="fullscreen-result" id="fingerErgebnis">
+            Lege Finger auf...
         </div>
     </div>
-        </div>
 
-    <!-- === NEU: MODAL POPUP (FÜR DEN GEWINNER) === -->
+    <!-- === DAS GEWINNER-POPUP-FENSTER (MODAL) === -->
     <div id="resultModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal" id="closeModalBtn">&times;</span>
             <h2 style="font-size: 24px; margin: 10px 0; color: #4a5568;">🎉 Gewinner!</h2>
-            <!-- Hier wird das Ergebnis dynamisch eingefügt -->
             <p id="modalResultText"></p>
             <button id="modalOkBtn">Super!</button>
         </div>
     </div>
 
-    <!-- ... (Dein restlicher HTML-Code bleibt gleich) ... -->
-    </div>
-
-    <!-- === NEU: KONFETTI-BIBLIOTHEK EINBINDEN === -->
+    <!-- === KONFETTI-BIBLIOTHEK EINBINDEN === -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script type="module" src="index.js"></script>

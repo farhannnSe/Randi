@@ -5,17 +5,16 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Geändert von height zu min-height, erlaubt Scrollen */
+    min-height: 100vh;
     margin: 0;
-    padding: 20px 0; /* Verhindert, dass die Box jemals oben anstößt */
+    padding: 20px 0;
     box-sizing: border-box;
 }
 
-/* Globaler Reset, damit Abstände auf allen Handys exakt berechnet werden */
 *, *:before, *:after {
     box-sizing: border-box;
 }
-/* Container etwas breiter für das große 340px Spielfeld */
+
 .container {
     position: relative;
     background: white;
@@ -24,7 +23,9 @@ body {
     box-shadow: 0 12px 30px rgba(0,0,0,0.25);
     text-align: center;
     width: 90%;
-    max-width: 410px; /* Perfekte Breite für Smartphones */
+    max-width: 410px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 h1 { color: #4a5568; margin-top: 15px; margin-bottom: 20px; }
 
@@ -37,7 +38,6 @@ h1 { color: #4a5568; margin-top: 15px; margin-bottom: 20px; }
     box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
 }
 
-/* Zurück-Pfeil oben links in den Spielen */
 .back-btn {
     position: absolute;
     top: 15px;
@@ -47,10 +47,7 @@ h1 { color: #4a5568; margin-top: 15px; margin-bottom: 20px; }
     background-color: #e2e8f0;
     color: #4a5568;
     border-radius: 6px;
-    z-index: 100; /* Stellt sicher, dass der Button immer ganz oben liegt */
-}
-.back-btn:hover {
-    background-color: #cbd5e0;
+    z-index: 1000; /* Liegt über dem Fullscreen-Spielfeld */
 }
 .back-btn:hover {
     background-color: #cbd5e0;
@@ -82,7 +79,6 @@ button {
 }
 button:hover { background-color: #5a67d8; }
 
-/* Box auf 340px vergrößert */
 .wheel-box {
     position: relative;
     display: inline-block;
@@ -168,7 +164,69 @@ ul {
     border-top: 2px solid #edf2f7;
     padding-top: 10px;
 }
-/* === NEU: POPUP MODAL STYLES === */
+
+/* =========================================================================
+   NEU: FULLSCREEN CHOOSER STYLES (ORANGE SPIELFELD)
+   ========================================================================= */
+#fingerScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #d9660e; /* Das gewählte Orange */
+    z-index: 500;
+    overflow: hidden;
+}
+
+/* Das Fullscreen Canvas nimmt 100% des Displays ein */
+#fingerCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* Schwebende Überschrift */
+.fullscreen-title {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    z-index: 1000;
+    margin: 0;
+    font-size: 26px;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    pointer-events: none; /* Blockiert keine Finger-Berührungen! */
+}
+
+/* Schwebendes Ergebnis unten */
+.fullscreen-result {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    z-index: 1000;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.45);
+    padding: 12px 25px;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    text-align: center;
+    min-width: 220px;
+    pointer-events: none; /* Blockiert keine Finger-Berührungen! */
+}
+
+/* =========================================================================
+   POPUP MODAL STYLES (WEICHZEICHNER)
+   ========================================================================= */
 .modal {
     position: fixed;
     top: 0;
@@ -176,13 +234,19 @@ ul {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(6px); /* Weichzeichner für den Hintergrund (Glass-Effekt) */
-    -webkit-backdrop-filter: blur(6px); /* Safari-Unterstützung */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
     transition: 0.3s ease;
+}
+
+body.modal-active .container {
+    filter: blur(6px);
+    transform: scale(0.94);
+    pointer-events: none;
 }
 
 .modal-content {
@@ -193,15 +257,12 @@ ul {
     text-align: center;
     box-shadow: 0 15px 35px rgba(0,0,0,0.3);
     position: relative;
-    transform: scale(0.7); /* Startgröße für Pop-Effekt */
-    animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; /* Feder-Effekt */
+    transform: scale(0.7);
+    animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-/* Die Feder-Animation (Scale-In mit elastischem Übersteuern) */
 @keyframes popUp {
-    to {
-        transform: scale(1.0);
-    }
+    to { transform: scale(1.0); }
 }
 
 .close-modal {
@@ -213,9 +274,7 @@ ul {
     color: #a0aec0;
     font-weight: bold;
 }
-.close-modal:hover {
-    color: #4a5568;
-}
+.close-modal:hover { color: #4a5568; }
 
 #modalResultText {
     font-size: 32px;
@@ -231,17 +290,4 @@ ul {
     font-size: 16px;
     background-color: #667eea;
 }
-#modalOkBtn:hover {
-    background-color: #5a67d8;
-}
-/* Erlaubt der Hauptbox, weich zu schrumpfen und unscharf zu werden */
-.container {
-    transition: filter 0.3s ease, transform 0.3s ease;
-}
-
-/* Wenn das Popup offen ist, wird der Hintergrund verkleinert, unscharf und gesperrt */
-body.modal-active .container {
-    filter: blur(6px);
-    transform: scale(0.94);
-    pointer-events: none; /* Verhindert, dass man im Hintergrund noch was klicken kann */
-}
+#modalOkBtn:hover { background-color: #5a67d8; }
