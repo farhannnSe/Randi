@@ -1,54 +1,57 @@
-# 🎯 Randi - Multi-Decision Web App
+# 🎯 Randi - Spin the Wheel & Multi-Touch Chooser
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+Hey! Welcome to **Randi**, a simple, clean, and interactive web app to help you and your friends make quick decisions. 
 
-**Randi** is a modern, high-performance, and mobile-optimized multi-game web application designed to make decision-making interactive and fun. Built with pure **TypeScript (ES6 Modules)**, **HTML5 Canvas**, and **CSS3**, it showcases clean code, modular architecture, and rich animations.
+I wanted to build a lightweight decision-maker that is fully mobile-optimized, fast, and completely free of heavy frameworks. So, I built this using pure **TypeScript**, **HTML5 Canvas**, and some smooth **CSS animations**.
 
-🚀 **[LIVE DEMO: Play Randi Now!](https://farhannnse.github.io/Randi/)**
+🚀 **[Click here to play Randi in your browser!](https://farhannnse.github.io/Randi/)**
 
 ---
 
-## 🎮 Key Features
+## 🎮 What does it do?
 
 ### 1. 🎯 Randi (Spin-the-Wheel)
-*   **Physics-Based Deceleration:** Realistic deceleration algorithm simulating friction (decay of angular velocity over time) for an exciting, unpredictable spin.
-*   **Dynamic Canvas Rendering:** Trigonometric rendering (`Math.PI`, `arc`, `save/restore` matrices) that dynamically draws custom slices and rotates text labels based on the number of active options.
-*   **Interactive CRUD List:** Live responsive adding, editing (via modal prompts), and deleting of options with automatic canvas redraws.
+*   **Realistic Physics:** The wheel doesn't just stop. It slows down naturally with friction and has a subtle, satisfying **bounce-back effect** at the end before stopping.
+*   **Instant Popup & Confetti:** When a winner is selected, the background blurs, a clean modal pops up, and **confetti cannons explode** from the bottom-left and bottom-right of your screen!
+*   **Quick Managing:** You can easily add options, edit them with a click (✏️), or delete them (❌). The wheel redraws itself instantly.
 
 ### 2. 🖐️ Chooser (Finger Picker)
-*   **Native Multi-Touch Support:** Captures and tracks multiple touch coordinates (`touchstart`, `touchmove`, `touchend`) simultaneously on mobile viewports.
-*   **Circular Progress Ring Animation:** Features an interactive loading circle that animates around each finger in real-time during the 2-second selection countdown.
-*   **Haptic Feedback Integration:** Uses the native Mobile Vibration API (`navigator.vibrate`) to provide physical feedback to the user once the random winner is selected.
-*   **Automatic State Reset:** High-end UX design that automatically resets the playground as soon as all players lift their fingers, allowing seamless consecutive rounds.
+*   **Fullscreen Playground:** When you enter the Chooser, the white card disappears, and your whole phone screen turns into a massive orange touch-field.
+*   **Smooth Animations:** Put your fingers on the screen to see glowing yellow circles with thick white rings. 
+*   **The Selection:** If 2 or more fingers are held down, an animated loading circle winds around your fingers. After 2 seconds, your phone vibrates, and a random winner starts flashing while the others fade out.
+*   **Auto-Reset:** Once a winner is picked and everyone lifts their fingers, the game automatically resets. You can play 100 rounds without going back to the menu!
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## 🛠️ How it's built (Under the Hood)
 
-This project was built from scratch without bloated frameworks to demonstrate a strong grasp of vanilla web technologies and software engineering principles:
-
-*   **TypeScript (Strict Mode):** Used for static typing, compile-time error checking, and code safety.
-*   **Object-Oriented Programming (OOP):** Encapsulated into clean, reusable classes (`Wheel` and `FingerPicker`) to ensure scalability for future games.
-*   **Data-Driven Rendering:** Changes to the option array automatically trigger reactive DOM updates and canvas redraws, keeping state and UI in perfect sync.
-*   **Modern ES6 Modules:** Developed using modular `import`/`export` architecture for cleaner file organization and maintainability.
+I wanted to practice good coding habits, so I structured the app like a pro:
+*   **TypeScript:** Keeps the code safe, typed, and helps catch bugs early.
+*   **Modular OOP:** The app is split into independent classes (`Wheel.ts` and `Finger.ts`). This makes it super easy to add new games later (like a coin flipper 🪙).
+*   **Responsive Canvas:** The canvases use modern CSS (`aspect-ratio`) to scale down nicely on narrow mobile screens while staying perfectly centered.
+*   **No Server Needed:** The app runs entirely in your browser (Client-Side). No databases, no hosting costs, loads instantly.
 
 ---
 
-## 📂 Project Structure
+## 💻 Running it Locally
 
-```text
-.
-├── public/                 # Static assets served by the local server
-│   ├── index.html          # Main entry HTML file (multi-screen navigation)
-│   ├── styles.css          # Customized responsive CSS UI layout
-│   ├── index.js            # Compiled entry JS script
-│   ├── Wheel.js            # Compiled Wheel class
-│   ├── Finger.js           # Compiled FingerPicker class
-│   └── utils.js            # Compiled helper constants/functions
-├── src/                    # TypeScript Source Code
-│   ├── index.ts            # App Controller (handles DOM routing)
-│   ├── Wheel.ts            # Object-Oriented Wheel Engine
-│   ├── Finger.ts           #
+If you want to play around with the code on your machine:
+
+1.  **Clone the project:**
+    ```bash
+    git clone https://github.com/farhannnSe/Randi.git
+    ```
+2.  **Compile the TypeScript:**
+    ```bash
+    npx tsc
+    ```
+3.  **Start a local server:**
+    Since the app uses modern ES modules, browsers block local file loading for security. Start a quick dev server:
+    ```bash
+    npx serve public
+    ```
+    Open the link (usually `http://localhost:3000`) and you are good to go!
+
+---
+
+*Made with ☕ by Farhan Seifaldeen.*
