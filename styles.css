@@ -80,12 +80,25 @@ button {
 button:hover { background-color: #5a67d8; }
 
 /* Das visuelle Drehrad-Gehäuse (Jetzt perfekt zentriert!) */
+/* Das visuelle Drehrad-Gehäuse (Jetzt zu 100% mobil-responsiv!) */
 .wheel-box {
     position: relative;
-    display: block; /* Geändert von inline-block zu block */
-    margin: 10px auto; /* "auto" zentriert das Rad perfekt in der Mitte der Box! */
-    width: 340px;
-    height: 340px;
+    display: block;
+    margin: 15px auto;   /* Perfekt mittig zentrieren */
+    width: 100%;         /* Nimmt die verfügbare Breite der weißen Box ein */
+    max-width: 340px;    /* Wird auf großen Bildschirmen maximal 340px groß */
+    aspect-ratio: 1 / 1; /* Hält die Box immer quadratisch (verhindert Verzerrung) */
+}
+
+/* Das Canvas füllt das Gehäuse vollautomatisch aus */
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.18);
 }
 .pointer {
     position: absolute;
